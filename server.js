@@ -7,7 +7,7 @@ const schoolRoutes = require('./src/routes/schoolRoutes');  // Импортир�
 const { AppDataSource } = require('./src/config/data-source'); // Подключаем DataSource для TypeORM
 
 const app = express();
-const port = 5000;
+const port = process.env.PORT;
 
 // Используем CORS для разрешения запросов с других доменов
 app.use(cors());
