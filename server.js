@@ -1,31 +1,31 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const userRoutes = require('./src/routes/userRoutes');  // Импортируем маршруты из userRoutes.js
-const groupRoutes = require('./src/routes/groupRoutes');  // Импортируем маршруты из userRoutes.js
-const schoolRoutes = require('./src/routes/schoolRoutes');  // Импортируем маршруты из userRoutes.js
-const { AppDataSource } = require('./src/config/data-source'); // Подключаем DataSource для TypeORM
+const userRoutes = require('./src/routes/userRoutes');
+const groupRoutes = require('./src/routes/groupRoutes');
+const schoolRoutes = require('./src/routes/schoolRoutes');
+const { AppDataSource } = require('./src/config/data-source');
 
 const app = express();
-const port = process.env.PORT;
+const port = process.env.PORT || 3000; // Добавил значение по умолчанию
 
 // Используем CORS для разрешения запросов с других доменов
 app.use(cors());
-
-// Мидлвар для парсинга JSON в теле запроса
 app.use(bodyParser.json());
 
-// Подключаем маршруты из userRoutes
-app.use('/api/users', userRoutes);  // Маршруты будут доступны по /api/users
-app.use('/api/groups', groupRoutes);  // Маршруты будут доступны по /api/users
-app.use('/api/schools', schoolRoutes);  // Маршруты будут доступны по /api/users
+// Подключаем маршруты
+app.use('/api/users', userRoutes);
+app.use('/api/groups', groupRoutes);
+app.use('/api/schools', schoolRoutes);
 
-
-// Подключение к базе данных PostgreSQL через TypeORM
+// Подключение к базе данных
 AppDataSource.initialize()
-    .then(() => console.log('Connected to PostgreSQL'))
-    .catch((err) => console.log('Failed to connect to PostgreSQL', err));
+    .then(() => console.log('✅ Connected to PostgreSQL'))
+    .catch((err) => {
+        console.error('❌ Failed to connect to PostgreSQL', err);
+        process.exit(1); // Остановит процесс при ошибке подключения
+    });
 
 app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
+    console.log(`🚀 Server running at http://localhost:${port}`);
 });

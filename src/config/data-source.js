@@ -12,7 +12,11 @@ const AppDataSource = new DataSource({
         require("../models/Group"),
         require("../models/School")
     ],
-    synchronize: true
+    synchronize: true,
+    logging: false,
+    ssl: {
+        rejectUnauthorized: false // Нужно для Render
+    }
 });
 
 module.exports = { AppDataSource };
